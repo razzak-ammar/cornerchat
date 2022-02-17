@@ -1,13 +1,53 @@
-import React from "react";
-import { View } from "react-native";
-import { TextInput, IconButton, Icon } from "@react-native-material/core";
+import React from 'react';
+import { View, TextInput, StyleSheet, Text, Button } from 'react-native';
+import { TouchableOpacity } from 'react-native-web';
 
 const Login = () => {
   return (
-    <View>
-      <TextInput label="Label" variant="outlined" />
+    <View style={styles.container}>
+      <Text style={styles.text}>Login</Text>
+      <TextInput placeholder='Email' style={styles.input} />
+      <TextInput placeholder='Password' style={styles.input} />
+      <TouchableOpacity>
+        <Text style={styles.button}>Login</Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  text: {
+    color: 'white',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontSize: 34,
+    margin: 10
+  },
+  input: {
+    color: 'white',
+    backgroundColor: '#333',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginVertical: 8,
+    width: 300
+  },
+  button: {
+    width: 300,
+    color: 'white',
+    backgroundColor: '#4596EC',
+    padding: 8,
+    fontSize: 12,
+    textAlign: 'center',
+    alignSelf: 'center',
+    margin: 5
+  }
+});
 
 export default Login;
