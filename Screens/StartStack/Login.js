@@ -1,13 +1,21 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Text, Button } from 'react-native';
-import { TouchableOpacity } from 'react-native-web';
+import { TouchableOpacity } from 'react-native';
 
 const Login = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Login</Text>
-      <TextInput placeholder='Email' style={styles.input} />
-      <TextInput placeholder='Password' style={styles.input} />
+      <TextInput
+        placeholder='Email'
+        style={styles.input}
+        placeholderTextColor='#ffffff'
+      />
+      <TextInput
+        placeholder='Password'
+        style={styles.input}
+        placeholderTextColor='#ffffff'
+      />
       <TouchableOpacity>
         <Text style={styles.button}>Login</Text>
       </TouchableOpacity>
@@ -30,8 +38,8 @@ const styles = StyleSheet.create({
     margin: 10
   },
   input: {
-    color: 'white',
-    backgroundColor: '#333',
+    color: '#ffffff',
+    backgroundColor: '#222',
     alignSelf: 'center',
     paddingVertical: 10,
     paddingHorizontal: 10,
