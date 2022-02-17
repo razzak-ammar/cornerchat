@@ -1,32 +1,32 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { Button } from "@react-native-material/core";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from '@react-native-material/core';
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Welcome from "./Screens/StartStack/Welcome";
-import Login from "./Screens/StartStack/Login";
-import Dashboard from "./Screens/StartStack/Dashboard";
+import Welcome from './Screens/StartStack/Welcome';
+import Login from './Screens/StartStack/Login';
+import Dashboard from './Screens/StartStack/Dashboard';
 
 const StartStack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={DarkTheme}>
       <StartStack.Navigator screenOptions={{}}>
         <StartStack.Screen
-          name="Welcome"
+          name='Welcome'
           component={Welcome}
           options={{ headerShown: false }}
         />
         <StartStack.Screen
-          name="Login"
+          name='Login'
           component={Login}
           options={{ headerShown: false }}
         />
         <StartStack.Screen
-          name="Dashboard"
+          name='Dashboard'
           component={Dashboard}
           options={{ headerShown: false }}
         />
@@ -36,10 +36,7 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  main: {
+    color: '#fff'
+  }
 });
