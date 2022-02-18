@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, TextInput, StyleSheet, Text, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native';
+import io from 'socket.io-client';
 
 const Login = () => {
+  useEffect(() => {
+    let socket = io('http://localhost:3000');
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Login</Text>
