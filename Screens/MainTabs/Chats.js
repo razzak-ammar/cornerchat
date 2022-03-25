@@ -6,7 +6,9 @@ import {
   TextInput,
   Image,
   StatusBar,
-  SafeAreaView
+  SafeAreaView,
+  Keyboard,
+  TouchableWithoutFeedback
 } from 'react-native';
 import IndividualChat from '../../Components/IndividualChat';
 import UserHeader from '../../Components/UserHeader';
@@ -14,14 +16,29 @@ import UserHeader from '../../Components/UserHeader';
 const Chats = () => {
   return (
     <SafeAreaView>
-      <View>
-        <StatusBar />
-        <UserHeader name='John Doe' picture={require('../../assets/14.jpg')} />
-        {/* Search Bar */}
-        <TextInput style={styles.searchBar} placeholder='Search chats...' />
-        <Text style={styles.heading}>Messages</Text>
-        <IndividualChat />
-      </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View>
+          <StatusBar />
+          <UserHeader
+            name='John Doe'
+            picture={require('../../assets/14.jpg')}
+          />
+          {/* Search Bar */}
+          <TextInput
+            style={styles.searchBar}
+            placeholder='Search chats...'
+            placeholderTextColor='#ffffff'
+          />
+          <Text style={styles.heading}>Messages</Text>
+          <IndividualChat
+            name='Nano Adam'
+            message='2 New Messages'
+            unread={true}
+            time='2s'
+            pfp={require('../../assets/14.jpg')}
+          />
+        </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };
@@ -44,7 +61,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginHorizontal: 10,
     borderRadius: 5,
-    padding: 3,
+    padding: 4.5,
     paddingHorizontal: 8
   }
 });
