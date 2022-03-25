@@ -5,21 +5,24 @@ import {
   StyleSheet,
   TextInput,
   Image,
-  StatusBar
+  StatusBar,
+  SafeAreaView
 } from 'react-native';
 import IndividualChat from '../../Components/IndividualChat';
 import UserHeader from '../../Components/UserHeader';
 
 const Chats = () => {
   return (
-    <View>
-      <StatusBar />
-      <UserHeader name='John Doe' picture={require('../../assets/14.jpg')} />
-      {/* Search Bar */}
-      <TextInput style={styles.searchBar} placeholder='Search chats...' />
-      <Text style={styles.heading}>Messages</Text>
-      <IndividualChat />
-    </View>
+    <SafeAreaView>
+      <View>
+        <StatusBar />
+        <UserHeader name='John Doe' picture={require('../../assets/14.jpg')} />
+        {/* Search Bar */}
+        <TextInput style={styles.searchBar} placeholder='Search chats...' />
+        <Text style={styles.heading}>Messages</Text>
+        <IndividualChat />
+      </View>
+    </SafeAreaView>
   );
 };
 

@@ -14,7 +14,7 @@ const StartStack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <NavigationContainer theme={DarkTheme}>
         <StartStack.Navigator screenOptions={{}}>
           <StartStack.Screen

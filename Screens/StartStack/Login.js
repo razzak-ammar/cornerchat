@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Button } from 'react-native';
-import { TouchableOpacity } from 'react-native';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Text,
+  Button,
+  Keyboard
+} from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import io from 'socket.io-client';
 
 const Login = () => {
@@ -9,22 +16,24 @@ const Login = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Login</Text>
-      <TextInput
-        placeholder='Email'
-        style={styles.input}
-        placeholderTextColor='#ffffff'
-      />
-      <TextInput
-        placeholder='Password'
-        style={styles.input}
-        placeholderTextColor='#ffffff'
-      />
-      <TouchableOpacity>
-        <Text style={styles.button}>Login</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Text style={styles.text}>Login</Text>
+        <TextInput
+          placeholder='Email'
+          style={styles.input}
+          placeholderTextColor='#ffffff'
+        />
+        <TextInput
+          placeholder='Password'
+          style={styles.input}
+          placeholderTextColor='#ffffff'
+        />
+        <TouchableOpacity>
+          <Text style={styles.button}>Login</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
