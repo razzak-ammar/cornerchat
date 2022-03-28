@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,25 @@ import {
   StatusBar,
   SafeAreaView,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Platform
 } from 'react-native';
 import IndividualChat from '../../Components/IndividualChat';
 import UserHeader from '../../Components/UserHeader';
 
 const Chats = () => {
+  const [searchText, setSearchText] = useState('');
+
+  const dismissKeyboard = () => {
+    if (Platform.OS != 'web') {
+      Keyboard.dismiss();
+    }
+  };
+
   return (
     <SafeAreaView>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View>
+      <TouchableWithoutFeedback onPress={dismissKeyboard}>
+        <View pointerEvents='auto'>
           <StatusBar />
           <UserHeader
             name='John Doe'
@@ -28,6 +37,8 @@ const Chats = () => {
             style={styles.searchBar}
             placeholder='Search chats...'
             placeholderTextColor='#ffffff'
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
           />
           <Text style={styles.heading}>Messages</Text>
           <IndividualChat

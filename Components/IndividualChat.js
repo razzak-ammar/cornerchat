@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 
 const IndividualChat = ({ name, message, unread, time, pfp }) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.6}>
       <View style={styles.main}>
         {pfp && <Image source={pfp} style={styles.pfp}></Image>}
         <View style={styles.mid}>
@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
   main: {
     padding: 12,
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: 'black'
   },
   mid: {
     paddingHorizontal: 15,
