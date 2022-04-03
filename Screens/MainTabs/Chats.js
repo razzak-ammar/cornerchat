@@ -46,7 +46,7 @@ const Chats = () => {
             message='2 New Messages'
             unread={true}
             time='2s'
-            pfp={require('../../assets/14.jpg')}
+            pfp={require('../../assets/15.jpg')}
           />
         </View>
       </TouchableWithoutFeedback>

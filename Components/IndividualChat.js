@@ -2,8 +2,12 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 
 const IndividualChat = ({ name, message, unread, time, pfp }) => {
+  const chatClick = () => {
+    console.log('Clicked');
+  };
+
   return (
-    <TouchableOpacity activeOpacity={0.6}>
+    <TouchableOpacity activeOpacity={0.6} onPress={chatClick}>
       <View style={styles.main}>
         {pfp && <Image source={pfp} style={styles.pfp}></Image>}
         <View style={styles.mid}>
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
   pfp: {
     height: 50,
     width: 50,
-    borderRadius: 20
+    borderRadius: 100
   },
   midText: {
     display: 'flex',
