@@ -13,9 +13,16 @@ import {
 } from 'react-native';
 import IndividualChat from '../../Components/IndividualChat';
 import UserHeader from '../../Components/UserHeader';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const Chats = () => {
+const Chats = (props) => {
   const [searchText, setSearchText] = useState('');
+  const [currentChat, setCurrentChat] = useState({
+    username: '',
+    name: '',
+    email: '',
+    chatId: null
+  });
 
   const dismissKeyboard = () => {
     if (Platform.OS != 'web') {
@@ -47,6 +54,8 @@ const Chats = () => {
             unread={true}
             time='2s'
             pfp={require('../../assets/15.jpg')}
+            navigation={props.navigation}
+            setCurrentChat={setCurrentChat}
           />
         </View>
       </TouchableWithoutFeedback>

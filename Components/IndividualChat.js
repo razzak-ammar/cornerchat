@@ -1,9 +1,19 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 
-const IndividualChat = ({ name, message, unread, time, pfp }) => {
+const IndividualChat = ({
+  name,
+  message,
+  unread,
+  time,
+  pfp,
+  navigation,
+  setCurrentChat
+}) => {
   const chatClick = () => {
     console.log('Clicked');
+    navigation.push('Chat');
+    setCurrentChat({ name: name, chatId: '1234567' });
   };
 
   return (

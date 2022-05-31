@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import Chats from '../MainTabs/Chats';
 import Settings from '../MainTabs/Settings';
+import ChatStackComponent from '../ChatStack/ChatStack';
 
 const MainTabs = createBottomTabNavigator();
 
@@ -12,8 +13,8 @@ const Dashboard = () => {
   return (
     <MainTabs.Navigator>
       <MainTabs.Screen
-        name='Chats'
-        component={Chats}
+        name='ChatStack'
+        component={ChatStackComponent}
         options={{
           headerShown: false,
           tabBarLabelStyle: { color: 'white', fontWeight: 'bold' },
