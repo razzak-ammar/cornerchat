@@ -1,39 +1,74 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import {
   View,
   TextInput,
   StyleSheet,
   Text,
   Button,
-  Keyboard
+  Keyboard,
+  SafeAreaView,
+  Platform
 } from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import io from 'socket.io-client';
+import AuthContext from '../../store/auth/authContext';
 
 const Login = () => {
+  const [formData, setFormData] = useState({});
+  const authContext = useContext(AuthContext);
+
   useEffect(() => {
-    let socket = io('http://localhost:3000');
+    // let socket = io('http://localhost:3000');
+    // authContext.loginUser('the@gmail.com', 'test123');
   }, []);
 
+  const onChange = (type, text) => {
+    setFormData({
+      ...formData,
+      [type]: text
+    });
+  };
+
+  const dismissKeyboard = () => {
+    if (Platform.OS != 'web') {
+      Keyboard.dismiss();
+    }
+  };
+
+  const onSubmit = () => {
+    // Check Inputs
+    if (formData['email'].length > 3 && formData['password'].length > 8) {
+      authContext.loginUser(formData['email'], formData['password']);
+    }
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <Text style={styles.text}>Login</Text>
-        <TextInput
-          placeholder='Email'
-          style={styles.input}
-          placeholderTextColor='#ffffff'
-        />
-        <TextInput
-          placeholder='Password'
-          style={styles.input}
-          placeholderTextColor='#ffffff'
-        />
-        <TouchableOpacity>
-          <Text style={styles.button}>Login</Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableWithoutFeedback>
+    <SafeAreaView>
+      <TouchableWithoutFeedback onPress={dismissKeyboard} style={styles.over}>
+        <View style={styles.container} pointerEvents='auto'>
+          <Text style={styles.text}>Login</Text>
+          <TextInput
+            placeholder='Email'
+            style={styles.input}
+            placeholderTextColor='#ffffff'
+            value={formData.email || ''}
+            onChangeText={(text) => onChange('email', text)}
+          />
+          <TextInput
+            placeholder='Password'
+            style={styles.input}
+            placeholderTextColor='#ffffff'
+            value={formData.password || ''}
+            onChangeText={(text) => onChange('password', text)}
+          />
+          <TouchableOpacity>
+            <Text style={styles.button} onPress={onSubmit}>
+              Login
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </SafeAreaView>
   );
 };
 
@@ -43,6 +78,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center'
+  },
+  over: {
+    zIndex: 10
   },
   text: {
     color: 'white',
@@ -58,7 +96,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     marginVertical: 8,
-    width: 300
+    width: 300,
+    zIndex: 100
   },
   button: {
     width: 300,

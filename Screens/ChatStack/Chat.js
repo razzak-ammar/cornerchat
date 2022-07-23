@@ -14,7 +14,7 @@ const Chat = (props) => {
           margin: 50
         }}
       >
-        John Doe
+        Nano Adam
       </Text>
       <ChatBubble />
     </View>

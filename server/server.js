@@ -14,12 +14,21 @@ connectDB();
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:19006'
+    origin: 'localhost:19006/'
   }
 });
 
 // Body Parser
 app.use(express.json());
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:19006');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
 
 app.get('/', (req, res) => {
   res.send('Hello World');
@@ -27,6 +36,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', require('./routes/Auth'));
 
+// Socket IO
 io.on('connection', (socket) => {
   console.log('a user connected');
 });
