@@ -6,7 +6,7 @@ const private = require('../middleware/private');
 const bcrypt = require('bcrypt');
 
 // @method      GET api/auth
-// @desc        Check current auth
+// @desc        Get current user data
 // @access      Private
 router.get('/', private, async (req, res) => {
   try {
@@ -55,6 +55,8 @@ router.post(
           id: user.id
         }
       };
+
+      console.log(`User ${email} is logging in`);
 
       jwt.sign(
         payload,

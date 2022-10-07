@@ -14,7 +14,7 @@ connectDB();
 
 const io = new Server(server, {
   cors: {
-    origin: 'localhost:19006/'
+    origin: '192.168.1.4:19006/'
   }
 });
 
@@ -22,10 +22,10 @@ const io = new Server(server, {
 app.use(express.json());
 
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:19006');
+  res.header('Access-Control-Allow-Origin', 'http://192.168.1.4:19006');
   res.header(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
+    'Origin, X-Requested-With, Content-Type, Accept, x-auth-token'
   );
   next();
 });

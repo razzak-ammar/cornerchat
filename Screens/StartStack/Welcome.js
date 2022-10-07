@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Button } from '@react-native-material/core';
-import { usePaletteColor } from '@react-native-material/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Welcome = (props) => {
+  useEffect(() => {
+    AsyncStorage.getItem('user-auth-token').then((val) => {
+      if (val === null) {
+        console.log('Need to login');
+      } else {
+        props.navigation.push('Dashboard');
+      }
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={{ color: 'white', fontSize: 50, textAlign: 'center' }}>
