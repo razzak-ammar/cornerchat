@@ -34,6 +34,8 @@ router.post(
     try {
       const { email, password } = req.body;
 
+      console.log(`Login attempt by ${email}`);
+
       let user = await User.findOne({ email });
 
       if (!user) {

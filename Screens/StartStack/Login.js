@@ -56,7 +56,7 @@ const Login = (props) => {
     );
     if (status === true) {
       props.navigation.push('Dashboard');
-      // await authContext.load_user();
+      await authContext.load_user();
     }
 
     if (status === false) {

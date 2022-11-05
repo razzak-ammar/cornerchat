@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Image,
   StatusBar,
   SafeAreaView,
   Keyboard,
@@ -62,7 +61,7 @@ const Chats = (props) => {
         <View pointerEvents='auto' style={styles.main}>
           <StatusBar />
           <UserHeader
-            name='John Doe'
+            name='Craig Federighi'
             picture={require('../../assets/14.jpg')}
           />
           {/* Search Bar */}

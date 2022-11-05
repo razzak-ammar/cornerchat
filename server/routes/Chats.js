@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { check, validationResult } = require('express-validator');
+const Chat = require('../models/Chat');
 
 // @method      GET /chats
 // @desc        Get the chats the user has
