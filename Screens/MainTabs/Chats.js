@@ -28,9 +28,12 @@ const Chats = (props) => {
     email: '',
     chatId: null
   });
-  const [chats, setChats] = useState();
+  const [chats, setChats] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
+
+  const [newChatUsername, setNewChatUsername] = useState('');
+  const [newChatMessage, setNewChatMessage] = useState('');
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
@@ -43,9 +46,11 @@ const Chats = (props) => {
     if (authContext.user) {
       authContext.user.chats.length > 0
         ? setChats(authContext.user.chats)
-        : setChats('fake');
+        : setChats(null);
+
+      console.log(authContext.user.chats);
     } else {
-      setChats('Nano');
+      setChats(null);
     }
   }, [authContext.user]);
 
@@ -55,68 +60,123 @@ const Chats = (props) => {
     }
   };
 
-  return (
-    <SafeAreaView>
-      <TouchableWithoutFeedback onPress={dismissKeyboard}>
-        <View pointerEvents='auto' style={styles.main}>
-          <StatusBar />
-          <UserHeader
-            name='Craig Federighi'
-            picture={require('../../assets/14.jpg')}
-          />
-          {/* Search Bar */}
-          <TextInput
-            style={styles.searchBar}
-            placeholder='Search chats...'
-            placeholderTextColor='#ffffff'
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <TouchableOpacity
-            style={styles.newButton}
-            onPress={() => setModalOpen(!modalOpen)}
-          >
-            <Text style={styles.newButtonText}>New Chat</Text>
-          </TouchableOpacity>
-          <Text style={styles.heading}>Messages</Text>
-          <Text style={styles.heading}>{chats}</Text>
-          <IndividualChat
-            name='Nano Adam'
-            message='2 New Messages'
-            unread={true}
-            time='2s'
-            pfp={require('../../assets/15.jpg')}
-            navigation={props.navigation}
-            setCurrentChat={setCurrentChat}
-          />
-          <BottomModal
-            modalOpen={modalOpen}
-            modalClosed={modalClosed}
-            setModalOpen={setModalOpen}
-            setModalClosed={setModalClosed}
-          >
-            <Text style={styles.modalHeader}>New Chat</Text>
-
-            <View style={styles.modalUsernameBox}>
-              <Text style={styles.modalLabel}>Username (Ex. @no_one)</Text>
-              <TextInput style={styles.modalInput} placeholder='Username' />
-            </View>
-
-            <View>
-              {/* <Text>Your Contacts</Text> */}
-              <ScrollView></ScrollView>
-            </View>
+  if (authContext.loading === true) {
+    return <h1>Loading as....</h1>;
+  } else {
+    return (
+      <SafeAreaView>
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+          <View pointerEvents='auto' style={styles.main}>
+            <StatusBar />
+            <UserHeader
+              name={authContext.user.name}
+              picture={require('../../assets/14.jpg')}
+            />
+            {/* Search Bar */}
+            <TextInput
+              style={styles.searchBar}
+              placeholder='Search chats...'
+              placeholderTextColor='#ffffff'
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
             <TouchableOpacity
-              style={styles.modalCloseButton}
-              onPress={() => setModalClosed(true)}
+              style={styles.newButton}
+              onPress={() => setModalOpen(!modalOpen)}
             >
-              <Text style={styles.modalCloseButtonText}>Close</Text>
+              <Text style={styles.newButtonText}>New Chat</Text>
             </TouchableOpacity>
-          </BottomModal>
-        </View>
-      </TouchableWithoutFeedback>
-    </SafeAreaView>
-  );
+            <Text style={styles.heading}>Messages</Text>
+            {chats ? (
+              Array.isArray(chats) && chats.length > 0 ? (
+                chats.map((chat) => (
+                  <IndividualChat
+                    name={chat.name}
+                    message='2 New Messages'
+                    unread={true}
+                    time='5s'
+                    pfp={require('../../assets/15.jpg')}
+                    navigation={props.navigation}
+                    setCurrentChat={setCurrentChat}
+                    key={chat._id}
+                  />
+                ))
+              ) : (
+                <h1>Loading again</h1>
+              )
+            ) : (
+              <h1>Loading</h1>
+            )}
+            <IndividualChat
+              name='Nano Adam'
+              message='2 New Messages'
+              unread={true}
+              time='2s'
+              pfp={require('../../assets/15.jpg')}
+              navigation={props.navigation}
+              setCurrentChat={setCurrentChat}
+            />
+
+            {/* START BOTTOM MODAL */}
+            <BottomModal
+              modalOpen={modalOpen}
+              modalClosed={modalClosed}
+              setModalOpen={setModalOpen}
+              setModalClosed={setModalClosed}
+            >
+              <Text style={styles.modalHeader}>New Chat</Text>
+
+              <View style={styles.modalUsernameBox}>
+                <Text style={styles.modalLabel}>Username (Ex. @no_one)</Text>
+                <TextInput
+                  style={styles.modalInput}
+                  placeholder='Username'
+                  value={newChatUsername}
+                  onChangeText={(text) => setNewChatUsername(text)}
+                />
+                {newChatUsername.length > 0 ? (
+                  <>
+                    <Text style={styles.modalLabel}>First Message to...</Text>
+                    <TextInput
+                      style={styles.modalInput}
+                      placeholder='First Message...'
+                      value={newChatMessage}
+                      onChangeText={(text) => setNewChatMessage(text)}
+                      height={10}
+                    />
+                  </>
+                ) : null}
+                {newChatMessage.length > 0 ? (
+                  <TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.modalCloseButton}
+                      // onPress={() => setModalClosed(true)}
+                    >
+                      <Text style={styles.modalCloseButtonText}>
+                        Create Chat
+                      </Text>
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+
+              <View>
+                {/* <Text>Your Contacts</Text> */}
+                <ScrollView></ScrollView>
+              </View>
+              <TouchableOpacity
+                style={styles.modalCloseButton}
+                onPress={() => setModalClosed(true)}
+              >
+                <Text style={styles.modalCloseButtonText}>Close</Text>
+              </TouchableOpacity>
+            </BottomModal>
+            {/* END BOTTOM MODAL */}
+          </View>
+        </TouchableWithoutFeedback>
+      </SafeAreaView>
+    );
+  }
 };
 
 // User
@@ -173,11 +233,12 @@ const styles = StyleSheet.create({
   modalInput: {
     backgroundColor: '#ffffff',
     padding: 5,
-    borderRadius: 4
+    borderRadius: 4,
+    marginBottom: 5
   },
   modalCloseButton: {
     backgroundColor: '#ffffff',
-    width: ScreenWidth - 100,
+    width: ScreenWidth - 200,
     borderRadius: 10,
     margin: 10,
     alignSelf: 'center'

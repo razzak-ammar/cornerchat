@@ -11,6 +11,7 @@ import Dashboard from './Screens/StartStack/Dashboard';
 import { TouchableWithoutFeedback } from 'react-native';
 
 import AuthState from './store/auth/AuthState';
+import ChatState from './store/chat/ChatState';
 
 const StartStack = createNativeStackNavigator();
 
@@ -19,23 +20,25 @@ export default function App() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <NavigationContainer theme={DarkTheme}>
         <AuthState>
-          <StartStack.Navigator screenOptions={{}}>
-            <StartStack.Screen
-              name='Welcome'
-              component={Welcome}
-              options={{ headerShown: false }}
-            />
-            <StartStack.Screen
-              name='Login'
-              component={Login}
-              options={{ headerShown: false }}
-            />
-            <StartStack.Screen
-              name='Dashboard'
-              component={Dashboard}
-              options={{ headerShown: false }}
-            />
-          </StartStack.Navigator>
+          <ChatState>
+            <StartStack.Navigator screenOptions={{}}>
+              <StartStack.Screen
+                name='Welcome'
+                component={Welcome}
+                options={{ headerShown: false }}
+              />
+              <StartStack.Screen
+                name='Login'
+                component={Login}
+                options={{ headerShown: false }}
+              />
+              <StartStack.Screen
+                name='Dashboard'
+                component={Dashboard}
+                options={{ headerShown: false }}
+              />
+            </StartStack.Navigator>
+          </ChatState>
         </AuthState>
       </NavigationContainer>
     </TouchableWithoutFeedback>

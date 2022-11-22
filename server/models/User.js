@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema({
   chats: [
     {
       name: { type: String, required: true },
+      usersEmail: { type: String, required: true },
       chatId: { type: mongoose.Schema.Types.ObjectId, required: true },
       lastMessage: { type: String, required: true }
     }

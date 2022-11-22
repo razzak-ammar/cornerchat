@@ -33,7 +33,7 @@ const Dashboard = (props) => {
           tabBarLabelStyle: { color: 'white', fontWeight: 'bold' },
           // tabBarShowLabel: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='chat' color={'#461AB8'} size={size} />
+            <MaterialCommunityIcons name='chat' color={'#fff'} size={size} />
           )
         }}
       />
