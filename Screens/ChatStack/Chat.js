@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import ChatBubble from '../../Components/ChatBubble';
+import chatContext from '../../store/chat/chatContext';
 
 const Chat = (props) => {
-  console.log(props.navigation);
+  const ChatContext = useContext(chatContext);
+
+  const [currentChatName, setCurrentChatName] = useState('');
+  const [messages, setCurrentMessages] = useState([]);
+
+  useEffect(() => {
+    if (ChatContext.currentChatName.length > 0) {
+      setCurrentChatName(ChatContext.currentChatName);
+      ChatContext.getCurrentChatMessages();
+    }
+  }, [ChatContext.currentChatName, ChatContext.currentChatId]);
+
+  // Current messages
+  useEffect(() => {
+    setCurrentMessages(ChatContext.currentChatMessages);
+  }, [ChatContext.currentChatMessages]);
+
+  if (ChatContext.loading) {
+    return <h1>Loading page... please wait </h1>;
+  }
+
   return (
     <View>
       <Text
@@ -14,9 +35,13 @@ const Chat = (props) => {
           margin: 50
         }}
       >
-        Nano Adam
+        {currentChatName}
       </Text>
-      <ChatBubble />
+      {messages.length > 0
+        ? messages.map((msg) => (
+            <ChatBubble content={msg.content} key={msg.timestamp} />
+          ))
+        : null}
     </View>
   );
 };

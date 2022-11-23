@@ -77,7 +77,7 @@ const AuthState = (props) => {
         loginUser,
         load_user,
         user: state.user,
-        loading: state.loadiing
+        loading: state.loading
       }}
     >
       {props.children}

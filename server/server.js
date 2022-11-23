@@ -20,6 +20,7 @@ const io = new Server(server, {
 
 // Body Parser
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://192.168.1.11:19006');

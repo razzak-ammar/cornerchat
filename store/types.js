@@ -1,3 +1,6 @@
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOAD_USER = 'LOAD_USER';
+export const SET_CURRENT_CHAT = 'SET_CURRENT_CHAT';
+export const SET_CURRENT_CHAT_MESSAGES = 'SET_CURRENT_CHAT_MESSAGES';
+export const SET_LOADING = 'SET_LOADING';

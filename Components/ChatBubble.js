@@ -1,13 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const ChatBubble = () => {
+const ChatBubble = (props) => {
   return (
     <View style={styles.bubble}>
-      <Text style={styles.text}>
-        Chat Bubble.... Hey! This is Nano Adam! The developer of this appp....
-        we should be doing something important
-      </Text>
+      <Text style={styles.text}>{props.content}</Text>
 
       <View style={styles.rightArrow}></View>
 

@@ -118,8 +118,30 @@ router.delete('/', (req, res) => {
 // @method      GET /chat/:chatId
 // @desc        Get a specific chat of the user
 // @access      Private
-router.get('/:chatId', (req, res) => {
-  res.send('Here is the specific persons chat you want');
+router.get('/:chatId', async (req, res) => {
+  try {
+    const chatId = req.params.chatId;
+    const chat = await Chat.findById(chatId);
+
+    if (!chat) {
+      return res.status(400).json({
+        message: 'No chat exists',
+        success: false
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Chat exists',
+      success: true,
+      data: chat
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      success: false,
+      error: err
+    });
+  }
 });
 
 // @method      POST /chat/:id

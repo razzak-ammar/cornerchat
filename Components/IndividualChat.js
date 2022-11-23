@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
+import chatContext from '../store/chat/chatContext';
 
 const IndividualChat = ({
   name,
@@ -8,12 +9,16 @@ const IndividualChat = ({
   time,
   pfp,
   navigation,
+  chatId,
   setCurrentChat
 }) => {
+  const ChatContext = useContext(chatContext);
+
   const chatClick = () => {
     console.log('Clicked');
     navigation.push('Chat');
-    setCurrentChat({ name: name, chatId: '1234567' });
+    setCurrentChat({ name: name, chatId: chatId });
+    ChatContext.setCurrentChat(chatId, name);
   };
 
   return (
