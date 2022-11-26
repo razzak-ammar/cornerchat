@@ -14,7 +14,7 @@ connectDB();
 
 const io = new Server(server, {
   cors: {
-    origin: '192.168.1.11:19006/'
+    origin: 'http://192.168.1.11:19006'
   }
 });
 
@@ -41,6 +41,17 @@ app.use('/api/chats', require('./routes/Chats'));
 // Socket IO
 io.on('connection', (socket) => {
   console.log('a user connected');
+
+  socket.on('new-message', (e) => {
+    socket.to(e.chatId).emit('message-received', { message: e.message });
+    console.log(`Message ${e.message} sent to ${e.chatId}`);
+    console.log(e);
+  });
+
+  socket.on('enter-conversation', (e) => {
+    socket.join(e.chatId);
+    console.log(`${socket.id} has joined ${e.chatId}`);
+  });
 });
 
 server.listen(3000, () => {

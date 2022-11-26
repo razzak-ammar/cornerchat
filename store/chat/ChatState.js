@@ -1,8 +1,9 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import ChatContext from './chatContext';
 import chatReducer from './chatReducer';
 import axios from '../../axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import io from 'socket.io-client';
 import {
   SET_CURRENT_CHAT,
   SET_CURRENT_CHAT_MESSAGES,
@@ -10,6 +11,17 @@ import {
 } from '../types';
 
 const ChatState = (props) => {
+  const [socket, setSocket] = useState();
+
+  useEffect(() => {
+    const newSocket = io('192.168.1.11:3000');
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
   const initialState = {
     currentChatId: null,
     currentChatName: '',
@@ -41,13 +53,23 @@ const ChatState = (props) => {
     }
   };
 
-  const setCurrentChat = (chatId, chatName) => {
-    dispatch({
+  const setCurrentChat = async (chatId, chatName) => {
+    await dispatch({
       type: SET_CURRENT_CHAT,
       payload: {
         chatId,
         chatName
       }
+    });
+    await socket.emit('enter-conversation', {
+      chatId: chatId
+    });
+  };
+
+  const sendMessage = (message) => {
+    socket.emit('new-message', {
+      chatId: state.currentChatId,
+      message: message
     });
   };
 
@@ -58,7 +80,8 @@ const ChatState = (props) => {
         currentChatName: state.currentChatName,
         getCurrentChatMessages,
         currentChatMessages: state.currentChatMessages,
-        loading: state.loading
+        loading: state.loading,
+        sendMessage
       }}
     >
       {props.children}

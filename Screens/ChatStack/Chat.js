@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import ChatBubble from '../../Components/ChatBubble';
+import ChatInputBox from '../../Components/ChatInputBox';
 import chatContext from '../../store/chat/chatContext';
+import io from 'socket.io-client';
 
 const Chat = (props) => {
   const ChatContext = useContext(chatContext);
@@ -25,6 +27,10 @@ const Chat = (props) => {
     return <h1>Loading page... please wait </h1>;
   }
 
+  const onSend = (e) => {
+    ChatContext.sendMessage('Hello, World!');
+  };
+
   return (
     <View>
       <Text
@@ -42,6 +48,8 @@ const Chat = (props) => {
             <ChatBubble content={msg.content} key={msg.timestamp} />
           ))
         : null}
+
+      <ChatInputBox onSend={onSend} />
     </View>
   );
 };
