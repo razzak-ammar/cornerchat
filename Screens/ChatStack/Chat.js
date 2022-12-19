@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import ChatBubble from '../../Components/ChatBubble';
 import ChatInputBox from '../../Components/ChatInputBox';
 import chatContext from '../../store/chat/chatContext';
-import io from 'socket.io-client';
 
 const Chat = (props) => {
   const ChatContext = useContext(chatContext);
@@ -23,8 +22,12 @@ const Chat = (props) => {
     setCurrentMessages(ChatContext.currentChatMessages);
   }, [ChatContext.currentChatMessages]);
 
+  useEffect(() => {
+    ChatContext.listenToChatMessages();
+  }, []);
+
   if (ChatContext.loading) {
-    return <h1>Loading page... please wait </h1>;
+    return <Text>Loading page... please wait </Text>;
   }
 
   const onSend = (e) => {

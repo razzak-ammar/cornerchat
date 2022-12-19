@@ -14,7 +14,7 @@ const ChatState = (props) => {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
-    const newSocket = io('192.168.1.11:3000');
+    const newSocket = io('192.168.1.18:3000');
     setSocket(newSocket);
 
     return () => {
@@ -26,7 +26,8 @@ const ChatState = (props) => {
     currentChatId: null,
     currentChatName: '',
     currentChatMessages: [],
-    loading: true
+    loading: true,
+    userId: null
   };
 
   const [state, dispatch] = useReducer(chatReducer, initialState);
@@ -53,12 +54,13 @@ const ChatState = (props) => {
     }
   };
 
-  const setCurrentChat = async (chatId, chatName) => {
+  const setCurrentChat = async (chatId, chatName, userId) => {
     await dispatch({
       type: SET_CURRENT_CHAT,
       payload: {
         chatId,
-        chatName
+        chatName,
+        userId
       }
     });
     await socket.emit('enter-conversation', {
@@ -73,6 +75,15 @@ const ChatState = (props) => {
     });
   };
 
+  const listenToChatMessages = () => {
+    socket.on('receive-new-message', (data) => {
+      dispatch({
+        type: NEW_MESSAGE,
+        data: data
+      });
+    });
+  };
+
   return (
     <ChatContext.Provider
       value={{
@@ -81,7 +92,8 @@ const ChatState = (props) => {
         getCurrentChatMessages,
         currentChatMessages: state.currentChatMessages,
         loading: state.loading,
-        sendMessage
+        sendMessage,
+        listenToChatMessages
       }}
     >
       {props.children}

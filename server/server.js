@@ -14,7 +14,7 @@ connectDB();
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://192.168.1.11:19006'
+    origin: 'http://192.168.1.18:19006'
   }
 });
 
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://192.168.1.11:19006');
+  res.header('Access-Control-Allow-Origin', 'http://192.168.1.18:19006');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, x-auth-token'
@@ -46,6 +46,8 @@ io.on('connection', (socket) => {
     socket.to(e.chatId).emit('message-received', { message: e.message });
     console.log(`Message ${e.message} sent to ${e.chatId}`);
     console.log(e);
+
+    socket.to(e.chatId).emit('receive-new-message', { msg: 'e.message' });
   });
 
   socket.on('enter-conversation', (e) => {

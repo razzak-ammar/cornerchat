@@ -21,6 +21,11 @@ export default (state, { type, payload }) => {
       };
     case SET_LOADING:
       return { ...state, loading: payload };
+    case NEW_MESSAGE:
+      return {
+        ...state,
+        currentChatMessages: state.currentChatMessages.push()
+      };
     default:
       return state;
   }

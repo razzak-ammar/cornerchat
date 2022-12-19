@@ -64,7 +64,7 @@ const Chats = (props) => {
   };
 
   if (authContext.loading) {
-    return <h1>Loading...</h1>;
+    return <Text>Loading...</Text>;
   }
 
   return (
@@ -107,10 +107,10 @@ const Chats = (props) => {
                 />
               ))
             ) : (
-              <h1>Loading again</h1>
+              <Text>Loading again</Text>
             )
           ) : (
-            <h1>Loading</h1>
+            <Text>Loading</Text>
           )}
 
           {/* START BOTTOM MODAL */}
