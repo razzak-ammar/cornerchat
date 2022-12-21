@@ -8,10 +8,16 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-const ChatInputBox = ({ onSend }) => {
+const ChatInputBox = ({ onSend, inputText, setInputText }) => {
   return (
     <View style={styles.root}>
-      <TextInput style={styles.input}></TextInput>
+      <TextInput
+        style={styles.input}
+        value={inputText}
+        onChangeText={(e) => {
+          setInputText(e);
+        }}
+      ></TextInput>
       <TouchableOpacity style={styles.button} onPress={onSend}>
         <Text style={styles.buttonText}>Send</Text>
       </TouchableOpacity>

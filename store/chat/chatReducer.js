@@ -1,7 +1,8 @@
 import {
   SET_CURRENT_CHAT,
   SET_CURRENT_CHAT_MESSAGES,
-  SET_LOADING
+  SET_LOADING,
+  NEW_MESSAGE
 } from '../types';
 
 export default (state, { type, payload }) => {
@@ -22,9 +23,10 @@ export default (state, { type, payload }) => {
     case SET_LOADING:
       return { ...state, loading: payload };
     case NEW_MESSAGE:
+      console.log('We ran here');
       return {
         ...state,
-        currentChatMessages: state.currentChatMessages.push()
+        currentChatMessages: [...state.currentChatMessages, payload]
       };
     default:
       return state;

@@ -7,27 +7,41 @@ import io from 'socket.io-client';
 import {
   SET_CURRENT_CHAT,
   SET_CURRENT_CHAT_MESSAGES,
-  SET_LOADING
+  SET_LOADING,
+  NEW_MESSAGE
 } from '../types';
 
 const ChatState = (props) => {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
-    const newSocket = io('192.168.1.18:3000');
-    setSocket(newSocket);
-
+    establishSocket();
     return () => {
-      newSocket.close();
+      socket.close();
     };
   }, []);
+
+  const establishSocket = async () => {
+    const newSocket = io('ws://192.168.1.18:3000', {
+      auth: {
+        token: await AsyncStorage.getItem('user-auth-token')
+      },
+      transports: ['websocket']
+    });
+    newSocket.on('connect_error', (err) => {
+      console.error('SOCKET ERROR');
+      console.error(err);
+    });
+    setSocket(newSocket);
+  };
 
   const initialState = {
     currentChatId: null,
     currentChatName: '',
     currentChatMessages: [],
     loading: true,
-    userId: null
+    userId: null,
+    currentUserId: null
   };
 
   const [state, dispatch] = useReducer(chatReducer, initialState);
@@ -68,18 +82,37 @@ const ChatState = (props) => {
     });
   };
 
-  const sendMessage = (message) => {
+  const sendMessage = ({ message, sender_id, sender_name }) => {
+    if (!socket) establishSocket();
+    console.log('SENDING MESSAGE - ' + message + ' ' + state.currentChatId);
     socket.emit('new-message', {
       chatId: state.currentChatId,
-      message: message
+      message: message,
+      sender_id: sender_id,
+      sender: sender_name
+    });
+
+    // Save to local
+    let new_message_object = {
+      sender_name: sender_name,
+      sender_id: sender_id,
+      timestamp: Date.now(),
+      content: message,
+      type: 'text'
+    };
+
+    dispatch({
+      type: NEW_MESSAGE,
+      payload: new_message_object
     });
   };
 
   const listenToChatMessages = () => {
     socket.on('receive-new-message', (data) => {
+      console.log('NEW MESSAGE - ', data);
       dispatch({
         type: NEW_MESSAGE,
-        data: data
+        payload: data
       });
     });
   };
