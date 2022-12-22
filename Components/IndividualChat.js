@@ -17,6 +17,11 @@ const IndividualChat = ({
   const chatClick = () => {
     console.log('Clicked');
     navigation.push('Chat');
+    // navigation.getParent().setOptions({
+    //   tabBarStyle: {
+    //     display: 'none'
+    //   }
+    // });
     setCurrentChat({ name: name, chatId: chatId });
     ChatContext.setCurrentChat(chatId, name);
   };

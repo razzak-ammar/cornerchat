@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, Keyboard, StatusBar } from 'react-native';
 import { Button } from '@react-native-material/core';
 
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
@@ -21,6 +20,7 @@ export default function App() {
       <NavigationContainer theme={DarkTheme}>
         <AuthState>
           <ChatState>
+            <StatusBar barStyle={'light-content'} />
             <StartStack.Navigator screenOptions={{}}>
               <StartStack.Screen
                 name='Welcome'

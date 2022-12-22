@@ -77,6 +77,10 @@ io.on('connection', (socket) => {
   socket.on('enter-conversation', (e) => {
     socket.join(e.chatId);
     console.log(`${socket.id} has joined ${e.chatId}`);
+
+    socket.to(e.chatId).emit('user-in-conversation', {
+      userId: e.userId
+    });
   });
 });
 

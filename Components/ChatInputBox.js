@@ -5,7 +5,8 @@ import {
   StyleSheet,
   TextInput,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from 'react-native';
 
 const ChatInputBox = ({ onSend, inputText, setInputText }) => {
@@ -17,6 +18,8 @@ const ChatInputBox = ({ onSend, inputText, setInputText }) => {
         onChangeText={(e) => {
           setInputText(e);
         }}
+        placeholder={'Message...'}
+        placeholderTextColor={'#fff'}
       ></TextInput>
       <TouchableOpacity style={styles.button} onPress={onSend}>
         <Text style={styles.buttonText}>Send</Text>
@@ -30,22 +33,25 @@ let ScreenWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   input: {
     backgroundColor: '#5620E5',
-    width: ScreenWidth - 20,
-    margin: 10,
-    height: 30,
+    margin: 30,
+    marginHorizontal: 10,
+    height: 50,
     padding: 10,
-    color: 'white'
+    color: 'white',
+    borderRadius: 20
   },
   button: {
-    backgroundColor: '#5620E5',
     width: 100,
-    borderRadius: 10,
-    margin: 15
+    margin: 0,
+    position: 'absolute',
+    right: 2,
+    bottom: 40
   },
   buttonText: {
     color: 'white',
     padding: 8,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: 'bold'
   }
 });
 

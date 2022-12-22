@@ -42,6 +42,14 @@ const Chats = (props) => {
   }, []);
 
   useEffect(() => {
+    props.navigation.setOptions({
+      tabBarStyle: {
+        display: 'flex'
+      }
+    });
+  }, [props.navigation]);
+
+  useEffect(() => {
     console.log(authContext.user);
 
     if (authContext.user) {

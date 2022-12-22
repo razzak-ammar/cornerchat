@@ -2,7 +2,8 @@ import {
   SET_CURRENT_CHAT,
   SET_CURRENT_CHAT_MESSAGES,
   SET_LOADING,
-  NEW_MESSAGE
+  NEW_MESSAGE,
+  USER_IN_CHAT
 } from '../types';
 
 export default (state, { type, payload }) => {
@@ -27,6 +28,11 @@ export default (state, { type, payload }) => {
       return {
         ...state,
         currentChatMessages: [...state.currentChatMessages, payload]
+      };
+    case USER_IN_CHAT:
+      return {
+        ...state,
+        userInChat: true
       };
     default:
       return state;

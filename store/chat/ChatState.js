@@ -8,7 +8,8 @@ import {
   SET_CURRENT_CHAT,
   SET_CURRENT_CHAT_MESSAGES,
   SET_LOADING,
-  NEW_MESSAGE
+  NEW_MESSAGE,
+  USER_IN_CHAT
 } from '../types';
 
 const ChatState = (props) => {
@@ -41,7 +42,8 @@ const ChatState = (props) => {
     currentChatMessages: [],
     loading: true,
     userId: null,
-    currentUserId: null
+    currentUserId: null,
+    userInChat: false
   };
 
   const [state, dispatch] = useReducer(chatReducer, initialState);
@@ -78,7 +80,8 @@ const ChatState = (props) => {
       }
     });
     await socket.emit('enter-conversation', {
-      chatId: chatId
+      chatId: chatId,
+      userId: userId
     });
   };
 
@@ -115,6 +118,18 @@ const ChatState = (props) => {
         payload: data
       });
     });
+
+    socket.on('user-in-conversation', (data) => {
+      console.log(
+        `when user is in chat.... we know ${data.userId} and ${state.currentUserId}`
+      );
+      if (data.userId !== state.currentUserId) {
+        dispatch({
+          type: USER_IN_CHAT,
+          payload: data.userId
+        });
+      }
+    });
   };
 
   return (
@@ -126,7 +141,8 @@ const ChatState = (props) => {
         currentChatMessages: state.currentChatMessages,
         loading: state.loading,
         sendMessage,
-        listenToChatMessages
+        listenToChatMessages,
+        userInChat: state.userInChat
       }}
     >
       {props.children}
