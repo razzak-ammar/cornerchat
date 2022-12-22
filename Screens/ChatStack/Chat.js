@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 import {
   View,
@@ -13,7 +13,7 @@ import {
   SafeAreaView,
   StatusBar,
   KeyboardAvoidingView,
-  Keyboard
+  Keyboard,
 } from 'react-native';
 import ChatBubble from '../../Components/ChatBubble';
 import ChatInputBox from '../../Components/ChatInputBox';
@@ -64,8 +64,8 @@ const Chat = (props) => {
 
     props.navigation.getParent().setOptions({
       tabBarStyle: {
-        display: 'none'
-      }
+        display: 'none',
+      },
     });
     // Keyboard.addListener('keyboardDidHide', () => {
     //   setScrollViewMultiplier(0.7);
@@ -84,7 +84,7 @@ const Chat = (props) => {
       ChatContext.sendMessage({
         message: inputText,
         sender_id: AuthContext.user._id,
-        sender_name: AuthContext.user.name
+        sender_name: AuthContext.user.name,
       });
       setInputText('');
     }
@@ -98,7 +98,7 @@ const Chat = (props) => {
         ref={scrollView}
         style={{
           maxHeight: ScreenHeight * scrollViewMultiplier,
-          height: ScreenHeight * scrollViewMultiplier
+          height: ScreenHeight * scrollViewMultiplier,
         }}
         onContentSizeChange={(contentHeight, contentWidth) => {
           scrollView.current.scrollToEnd({ animated: true });
@@ -123,7 +123,7 @@ const Chat = (props) => {
             )
           : null}
       </ScrollView>
-      <KeyboardAvoidingView behavior='position'>
+      <KeyboardAvoidingView behavior="position">
         <ChatInputBox
           onSend={onSend}
           inputText={inputText}

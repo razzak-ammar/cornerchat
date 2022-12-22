@@ -9,7 +9,7 @@ import {
   SET_CURRENT_CHAT_MESSAGES,
   SET_LOADING,
   NEW_MESSAGE,
-  USER_IN_CHAT
+  USER_IN_CHAT,
 } from '../types';
 
 const ChatState = (props) => {
@@ -23,11 +23,11 @@ const ChatState = (props) => {
   }, []);
 
   const establishSocket = async () => {
-    const newSocket = io('ws://192.168.1.18:3000', {
+    const newSocket = io('ws://192.168.1.23:3000', {
       auth: {
-        token: await AsyncStorage.getItem('user-auth-token')
+        token: await AsyncStorage.getItem('user-auth-token'),
       },
-      transports: ['websocket']
+      transports: ['websocket'],
     });
     newSocket.on('connect_error', (err) => {
       console.error('SOCKET ERROR');
@@ -43,7 +43,7 @@ const ChatState = (props) => {
     loading: true,
     userId: null,
     currentUserId: null,
-    userInChat: false
+    userInChat: false,
   };
 
   const [state, dispatch] = useReducer(chatReducer, initialState);
@@ -52,7 +52,7 @@ const ChatState = (props) => {
   const getCurrentChatMessages = async () => {
     dispatch({
       type: SET_LOADING,
-      payload: true
+      payload: true,
     });
     try {
       const response = await axios.get(`/chats/${state.currentChatId}`);
@@ -60,7 +60,7 @@ const ChatState = (props) => {
       if ((await response.data.success) === true) {
         dispatch({
           type: SET_CURRENT_CHAT_MESSAGES,
-          payload: response.data.data
+          payload: response.data.data,
         });
       }
 
@@ -76,12 +76,12 @@ const ChatState = (props) => {
       payload: {
         chatId,
         chatName,
-        userId
-      }
+        userId,
+      },
     });
     await socket.emit('enter-conversation', {
       chatId: chatId,
-      userId: userId
+      userId: userId,
     });
   };
 
@@ -92,7 +92,7 @@ const ChatState = (props) => {
       chatId: state.currentChatId,
       message: message,
       sender_id: sender_id,
-      sender: sender_name
+      sender: sender_name,
     });
 
     // Save to local
@@ -101,12 +101,12 @@ const ChatState = (props) => {
       sender_id: sender_id,
       timestamp: Date.now(),
       content: message,
-      type: 'text'
+      type: 'text',
     };
 
     dispatch({
       type: NEW_MESSAGE,
-      payload: new_message_object
+      payload: new_message_object,
     });
   };
 
@@ -115,7 +115,7 @@ const ChatState = (props) => {
       console.log('NEW MESSAGE - ', data);
       dispatch({
         type: NEW_MESSAGE,
-        payload: data
+        payload: data,
       });
     });
 
@@ -126,7 +126,7 @@ const ChatState = (props) => {
       if (data.userId !== state.currentUserId) {
         dispatch({
           type: USER_IN_CHAT,
-          payload: data.userId
+          payload: data.userId,
         });
       }
     });
@@ -142,7 +142,7 @@ const ChatState = (props) => {
         loading: state.loading,
         sendMessage,
         listenToChatMessages,
-        userInChat: state.userInChat
+        userInChat: state.userInChat,
       }}
     >
       {props.children}
