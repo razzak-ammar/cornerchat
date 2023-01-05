@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Text,
   View,
@@ -6,10 +6,19 @@ import {
   TextInput,
   Dimensions,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from 'react-native';
 
 const ChatInputBox = ({ onSend, inputText, setInputText }) => {
+  const inputBox = useRef();
+
+  const handleKeyDown = (e) => {
+    if (e.nativeEvent.key == 'Enter') {
+      onSend();
+      inputBox.focus();
+    }
+  };
+
   return (
     <View style={styles.root}>
       <TextInput
@@ -20,6 +29,8 @@ const ChatInputBox = ({ onSend, inputText, setInputText }) => {
         }}
         placeholder={'Message...'}
         placeholderTextColor={'#fff'}
+        onKeyPress={handleKeyDown}
+        ref={inputBox}
       ></TextInput>
       <TouchableOpacity style={styles.button} onPress={onSend}>
         <Text style={styles.buttonText}>Send</Text>
@@ -38,21 +49,21 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     color: 'white',
-    borderRadius: 20
+    borderRadius: 20,
   },
   button: {
     width: 100,
     margin: 0,
     position: 'absolute',
     right: 2,
-    bottom: 40
+    bottom: 40,
   },
   buttonText: {
     color: 'white',
     padding: 8,
     textAlign: 'center',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 });
 
 export default ChatInputBox;
