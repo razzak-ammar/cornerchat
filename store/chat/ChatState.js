@@ -16,24 +16,31 @@ const ChatState = (props) => {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
-    establishSocket();
     return () => {
       socket.close();
     };
   }, []);
 
   const establishSocket = async () => {
-    const newSocket = io('ws://192.168.1.18:3000', {
-      auth: {
-        token: await AsyncStorage.getItem('user-auth-token')
-      },
-      transports: ['websocket']
+    // Check if we are already logged in
+    AsyncStorage.getItem('user-auth-token').then(async (val) => {
+      if (val === null) {
+        console.log('something');
+      } else {
+        // props.navigation.push('Dashboard');
+        const newSocket = io('ws://192.168.1.18:3000', {
+          auth: {
+            token: await AsyncStorage.getItem('user-auth-token')
+          },
+          transports: ['websocket']
+        });
+        newSocket.on('connect_error', (err) => {
+          console.error('SOCKET ERROR');
+          console.error(err);
+        });
+        setSocket(newSocket);
+      }
     });
-    newSocket.on('connect_error', (err) => {
-      console.error('SOCKET ERROR');
-      console.error(err);
-    });
-    setSocket(newSocket);
   };
 
   const initialState = {

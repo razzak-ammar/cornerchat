@@ -32,7 +32,7 @@ const Chat = (props) => {
   const [currentChatName, setCurrentChatName] = useState('');
   const [messages, setCurrentMessages] = useState([]);
   const [inputText, setInputText] = useState('');
-  const [scrollViewMultiplier, setScrollViewMultiplier] = useState(0.7);
+  const [scrollViewMultiplier, setScrollViewMultiplier] = useState(0.8);
   const [userInChat, setUserInChat] = useState(false);
 
   useEffect(() => {
