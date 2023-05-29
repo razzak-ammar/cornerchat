@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
+  useState
 } from 'react';
 import {
   View,
@@ -13,7 +13,7 @@ import {
   SafeAreaView,
   StatusBar,
   KeyboardAvoidingView,
-  Keyboard,
+  Keyboard
 } from 'react-native';
 import ChatBubble from '../../Components/ChatBubble';
 import ChatInputBox from '../../Components/ChatInputBox';
@@ -25,14 +25,12 @@ const Chat = (props) => {
   const ChatContext = useContext(chatContext);
   const AuthContext = useContext(authContext);
 
-  const scrollView = useRef();
-
   let ScreenHeight = Dimensions.get('window').height;
 
   const [currentChatName, setCurrentChatName] = useState('');
   const [messages, setCurrentMessages] = useState([]);
   const [inputText, setInputText] = useState('');
-  const [scrollViewMultiplier, setScrollViewMultiplier] = useState(0.8);
+  const [scrollViewMultiplier, setScrollViewMultiplier] = useState(0.7);
   const [userInChat, setUserInChat] = useState(false);
 
   useEffect(() => {
@@ -57,19 +55,21 @@ const Chat = (props) => {
     setUserInChat(true);
   }, [ChatContext.userInChat]);
 
+  const scrollView = useRef();
+
   useLayoutEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => {
-      scrollView.current.style.height = ScreenHeight * 0.3;
+      setScrollViewMultiplier(0.7);
     });
 
     props.navigation.getParent().setOptions({
       tabBarStyle: {
-        display: 'none',
-      },
+        display: 'none'
+      }
     });
-    // Keyboard.addListener('keyboardDidHide', () => {
-    //   setScrollViewMultiplier(0.7);
-    // });
+    Keyboard.addListener('keyboardDidHide', () => {
+      // setScrollViewMultiplier(0.7);
+    });
   }, []);
 
   if (ChatContext.loading) {
@@ -78,13 +78,13 @@ const Chat = (props) => {
 
   const onSend = () => {
     // Need to send: message, sender_id, sender_name
-    console.log(AuthContext.user._id);
+    // console.log(AuthContext.user._id);
     console.log('I am sending a message');
     if (inputText.length >= 1) {
       ChatContext.sendMessage({
         message: inputText,
         sender_id: AuthContext.user._id,
-        sender_name: AuthContext.user.name,
+        sender_name: AuthContext.user.name
       });
       setInputText('');
     }
@@ -98,10 +98,10 @@ const Chat = (props) => {
         ref={scrollView}
         style={{
           maxHeight: ScreenHeight * scrollViewMultiplier,
-          height: ScreenHeight * scrollViewMultiplier,
+          height: ScreenHeight * scrollViewMultiplier
         }}
         onContentSizeChange={(contentHeight, contentWidth) => {
-          scrollView.current.scrollToEnd({ animated: true });
+          scrollView.current?.scrollToEnd({ animated: true });
         }}
         showsVerticalScrollIndicator={false}
       >
@@ -123,7 +123,7 @@ const Chat = (props) => {
             )
           : null}
       </ScrollView>
-      <KeyboardAvoidingView behavior="position">
+      <KeyboardAvoidingView behavior='position'>
         <ChatInputBox
           onSend={onSend}
           inputText={inputText}

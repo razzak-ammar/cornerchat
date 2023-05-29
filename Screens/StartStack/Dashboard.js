@@ -15,7 +15,7 @@ const Dashboard = (props) => {
     // Check if we are already logged in
     AsyncStorage.getItem('user-auth-token').then((val) => {
       if (val === null) {
-        props.navigation.push('Login');
+        // props.navigation.push('Login');
       } else {
         // props.navigation.push('Dashboard');
         console.log('Logged in...');

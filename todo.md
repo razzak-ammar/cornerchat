@@ -1,0 +1,5 @@
+- [ ] Fix Search Bar
+  - [ ] Padding
+  - [ ] Search Icon 
+- [ ] New Chat Button
+- [ ] Fix Keyboard Bring up Issue in Individual Chat

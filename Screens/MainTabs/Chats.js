@@ -50,7 +50,7 @@ const Chats = (props) => {
   }, [props.navigation]);
 
   useEffect(() => {
-    console.log(authContext.user);
+    // console.log(authContext.user);
 
     if (authContext.user) {
       authContext.user.chats.length > 0

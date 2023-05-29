@@ -16,6 +16,7 @@ const ChatState = (props) => {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
+    if (!socket) establishSocket();
     return () => {
       socket.close();
     };
@@ -28,7 +29,7 @@ const ChatState = (props) => {
         console.log('something');
       } else {
         // props.navigation.push('Dashboard');
-        const newSocket = io('ws://192.168.1.18:3000', {
+        const newSocket = io('ws://192.168.1.5:3000', {
           auth: {
             token: await AsyncStorage.getItem('user-auth-token')
           },
@@ -118,6 +119,7 @@ const ChatState = (props) => {
   };
 
   const listenToChatMessages = () => {
+    if (!socket) establishSocket();
     socket.on('receive-new-message', (data) => {
       console.log('NEW MESSAGE - ', data);
       dispatch({
