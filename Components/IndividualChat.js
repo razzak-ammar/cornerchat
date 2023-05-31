@@ -10,20 +10,17 @@ const IndividualChat = ({
   pfp,
   navigation,
   chatId,
-  setCurrentChat
+  setCurrentChat,
+  userId
 }) => {
   const ChatContext = useContext(chatContext);
 
   const chatClick = () => {
-    console.log('Clicked');
     navigation.push('Chat');
-    // navigation.getParent().setOptions({
-    //   tabBarStyle: {
-    //     display: 'none'
-    //   }
-    // });
-    setCurrentChat({ name: name, chatId: chatId });
-    ChatContext.setCurrentChat(chatId, name);
+
+    setCurrentChat({ name: name, chatId: chatId, userId: userId });
+    console.log(`User ${userId} clicked a chat`);
+    ChatContext.setCurrentChat(chatId, name, userId);
   };
 
   return (

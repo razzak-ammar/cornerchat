@@ -9,12 +9,15 @@ import {
   SafeAreaView
 } from 'react-native';
 
-const ChatTopBar = ({ chatName, userInChat }) => {
+const ChatTopBar = ({ chatName, userInChat, navigation }) => {
   return (
     <SafeAreaView style={styles.headerBg}>
       <View style={styles.root}>
         <View style={styles.left}>
-          <TouchableOpacity style={styles.tempArrowContainer}>
+          <TouchableOpacity
+            style={styles.tempArrowContainer}
+            onPress={() => navigation.goBack()}
+          >
             <Text style={styles.tempArrow}>{'<'}</Text>
           </TouchableOpacity>
         </View>
@@ -26,10 +29,14 @@ const ChatTopBar = ({ chatName, userInChat }) => {
         </View>
         <View style={styles.right}>
           <Text style={styles.chatName}>{chatName}</Text>
-          <Text style={styles.status}>Offline</Text>
           {userInChat ? (
-            <Text style={styles.status}>They are in the conversation</Text>
-          ) : null}
+            <>
+              <Text style={styles.status}>Online</Text>
+              <Text style={styles.status}>They are in the conversation</Text>
+            </>
+          ) : (
+            <Text style={styles.status}>Offline</Text>
+          )}
         </View>
       </View>
     </SafeAreaView>
@@ -40,7 +47,8 @@ const screenHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   headerBg: {
-    backgroundColor: '#131333'
+    backgroundColor: '#131333',
+    zIndex: 20
   },
   root: {
     padding: 20,

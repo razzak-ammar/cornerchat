@@ -9,26 +9,34 @@ import {
   SET_CURRENT_CHAT_MESSAGES,
   SET_LOADING,
   NEW_MESSAGE,
-  USER_IN_CHAT
+  USER_IN_CHAT,
+  USER_LEFT_CHAT
 } from '../types';
 
 const ChatState = (props) => {
-  const [socket, setSocket] = useState();
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    if (!socket) establishSocket();
+    console.log('ESTABLISHHH!');
+    if (!socket) {
+      establishSocket();
+    }
     return () => {
-      socket.close();
+      if (socket) {
+        socket.close();
+      }
     };
-  }, []);
+  }, [socket]);
 
   const establishSocket = async () => {
     // Check if we are already logged in
     AsyncStorage.getItem('user-auth-token').then(async (val) => {
       if (val === null) {
-        console.log('something');
+        console.log('User not logged in!');
       } else {
         // props.navigation.push('Dashboard');
+        // console.log(socket.active);
+        console.log('establishSocket: we are logged in!');
         const newSocket = io('ws://192.168.1.5:3000', {
           auth: {
             token: await AsyncStorage.getItem('user-auth-token')
@@ -39,9 +47,18 @@ const ChatState = (props) => {
           console.error('SOCKET ERROR');
           console.error(err);
         });
-        setSocket(newSocket);
+        // if (!socket) {
+        console.log('establishSocket: about to setSocket(newSocket)');
+        return setSocket(newSocket);
+        // }
       }
     });
+  };
+
+  const disconnectSocket = () => {
+    if (socket.active) {
+      socket.close();
+    }
   };
 
   const initialState = {
@@ -72,7 +89,7 @@ const ChatState = (props) => {
         });
       }
 
-      console.log(response.data.data);
+      // console.log(response.data.data);
     } catch (err) {
       console.log(err);
     }
@@ -87,9 +104,15 @@ const ChatState = (props) => {
         userId
       }
     });
-    await socket.emit('enter-conversation', {
-      chatId: chatId,
-      userId: userId
+  };
+
+  const userLeftConversation = async () => {
+    console.log(
+      `User ${state.userId} left the conversation ${state.currentChatId}`
+    );
+    await socket.emit('leave-conversation', {
+      userId: state.userId,
+      chatId: state.currentChatId
     });
   };
 
@@ -118,8 +141,13 @@ const ChatState = (props) => {
     });
   };
 
-  const listenToChatMessages = () => {
-    if (!socket) establishSocket();
+  const listenToChatMessages = async () => {
+    // if (!socket) establishSocket();
+    if (!socket) {
+      console.log(
+        "listenToChatMessages: I am told to listen to messages but I don't have a socket"
+      );
+    }
     socket.on('receive-new-message', (data) => {
       console.log('NEW MESSAGE - ', data);
       dispatch({
@@ -128,17 +156,41 @@ const ChatState = (props) => {
       });
     });
 
+    console.log(
+      `In chat ${state.currentChatId} the user ${state.userId} is listening to messages `
+    );
+
+    await socket.emit('enter-conversation', {
+      chatId: state.currentChatId,
+      userId: state.userId
+    });
+
     socket.on('user-in-conversation', (data) => {
       console.log(
-        `when user is in chat.... we know ${data.userId} and ${state.currentUserId}`
+        `when user is in chat.... we know ${data.userId} and ${state.userId}`
       );
-      if (data.userId !== state.currentUserId) {
+      if (data.userId !== state.userId) {
         dispatch({
           type: USER_IN_CHAT,
           payload: data.userId
         });
       }
     });
+
+    socket.on('user-left-conversation', (data) => {
+      if (data.userId !== state.userId) {
+        console.log('The other user left the chat');
+        dispatch({
+          type: USER_LEFT_CHAT,
+          payload: data.userId
+        });
+      }
+    });
+  };
+
+  const stopListeningToMessages = () => {
+    socket.removeAllListeners('receive-new-message');
+    userLeftConversation();
   };
 
   return (
@@ -151,7 +203,10 @@ const ChatState = (props) => {
         loading: state.loading,
         sendMessage,
         listenToChatMessages,
-        userInChat: state.userInChat
+        userInChat: state.userInChat,
+        disconnectSocket: disconnectSocket,
+        stopListeningToMessages: stopListeningToMessages,
+        userLeftConversation: userLeftConversation
       }}
     >
       {props.children}

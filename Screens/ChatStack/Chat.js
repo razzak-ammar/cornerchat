@@ -1,19 +1,12 @@
-import React, {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState
-} from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   Text,
   ScrollView,
   Dimensions,
-  SafeAreaView,
-  StatusBar,
   KeyboardAvoidingView,
-  Keyboard
+  StyleSheet
 } from 'react-native';
 import ChatBubble from '../../Components/ChatBubble';
 import ChatInputBox from '../../Components/ChatInputBox';
@@ -21,18 +14,47 @@ import ChatTopBar from '../../Components/ChatTopBar';
 import authContext from '../../store/auth/authContext';
 import chatContext from '../../store/chat/chatContext';
 
+let ScreenHeight = Dimensions.get('window').height;
+
 const Chat = (props) => {
   const ChatContext = useContext(chatContext);
   const AuthContext = useContext(authContext);
 
-  let ScreenHeight = Dimensions.get('window').height;
-
   const [currentChatName, setCurrentChatName] = useState('');
   const [messages, setCurrentMessages] = useState([]);
   const [inputText, setInputText] = useState('');
-  const [scrollViewMultiplier, setScrollViewMultiplier] = useState(0.7);
+  const [scrollViewMultiplier, setScrollViewMultiplier] = useState(0.75);
   const [userInChat, setUserInChat] = useState(false);
 
+  // Load Initial
+  useEffect(() => {
+    props.navigation.getParent().setOptions({
+      tabBarStyle: {
+        display: 'none'
+      }
+    });
+  }, []);
+
+  // Listen to Chat Messages
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      ChatContext.listenToChatMessages();
+
+      return () => {
+        // When not focussed
+        ChatContext.stopListeningToMessages();
+        props.navigation.getParent().setOptions({
+          tabBarStyle: {
+            display: 'flex'
+          }
+        });
+        // ChatContext.userLeftConversation();
+      };
+    }, [])
+  );
+
+  // Setting Chat
   useEffect(() => {
     if (ChatContext.currentChatName.length > 0) {
       setCurrentChatName(ChatContext.currentChatName);
@@ -45,32 +67,14 @@ const Chat = (props) => {
     setCurrentMessages(ChatContext.currentChatMessages);
     console.log('There is a new message');
   }, [ChatContext.currentChatMessages]);
-  // }, []
 
+  // Set User in Chat
   useEffect(() => {
-    ChatContext.listenToChatMessages();
-  }, []);
-
-  useEffect(() => {
-    setUserInChat(true);
+    setUserInChat(ChatContext.userInChat);
   }, [ChatContext.userInChat]);
 
   const scrollView = useRef();
-
-  useLayoutEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => {
-      setScrollViewMultiplier(0.7);
-    });
-
-    props.navigation.getParent().setOptions({
-      tabBarStyle: {
-        display: 'none'
-      }
-    });
-    Keyboard.addListener('keyboardDidHide', () => {
-      // setScrollViewMultiplier(0.7);
-    });
-  }, []);
+  const scrollViewContainer = useRef();
 
   if (ChatContext.loading) {
     return <Text>Loading page... please wait </Text>;
@@ -78,8 +82,6 @@ const Chat = (props) => {
 
   const onSend = () => {
     // Need to send: message, sender_id, sender_name
-    // console.log(AuthContext.user._id);
-    console.log('I am sending a message');
     if (inputText.length >= 1) {
       ChatContext.sendMessage({
         message: inputText,
@@ -91,39 +93,49 @@ const Chat = (props) => {
   };
 
   return (
-    <View>
-      <ChatTopBar chatName={currentChatName} userInChat={userInChat} />
+    <View style={styles.root}>
+      <ChatTopBar
+        chatName={currentChatName}
+        userInChat={userInChat}
+        navigation={props.navigation}
+      />
 
-      <ScrollView
-        ref={scrollView}
+      <KeyboardAvoidingView
+        behavior='position'
+        keyboardVerticalOffset={100}
+        ref={scrollViewContainer}
         style={{
           maxHeight: ScreenHeight * scrollViewMultiplier,
           height: ScreenHeight * scrollViewMultiplier
         }}
-        onContentSizeChange={(contentHeight, contentWidth) => {
-          scrollView.current?.scrollToEnd({ animated: true });
-        }}
-        showsVerticalScrollIndicator={false}
       >
-        {messages.length > 0
-          ? messages.map((msg) =>
-              msg.sender_id == AuthContext.user._id ? (
-                <ChatBubble
-                  content={msg.content}
-                  key={msg.timestamp}
-                  arrow={'right'}
-                />
-              ) : (
-                <ChatBubble
-                  content={msg.content}
-                  key={msg.timestamp}
-                  arrow={'left'}
-                />
+        <ScrollView
+          ref={scrollView}
+          style={{}}
+          onContentSizeChange={(contentHeight, contentWidth) => {
+            scrollView.current?.scrollToEnd({ animated: true });
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          {messages.length > 0
+            ? messages.map((msg) =>
+                msg.sender_id == AuthContext.user._id ? (
+                  <ChatBubble
+                    content={msg.content}
+                    key={msg.timestamp}
+                    arrow={'right'}
+                  />
+                ) : (
+                  <ChatBubble
+                    content={msg.content}
+                    key={msg.timestamp}
+                    arrow={'left'}
+                  />
+                )
               )
-            )
-          : null}
-      </ScrollView>
-      <KeyboardAvoidingView behavior='position'>
+            : null}
+        </ScrollView>
+
         <ChatInputBox
           onSend={onSend}
           inputText={inputText}
@@ -133,5 +145,12 @@ const Chat = (props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  root: {
+    minHeight: ScreenHeight,
+    maxHeight: ScreenHeight
+  }
+});
 
 export default Chat;

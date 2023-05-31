@@ -22,11 +22,14 @@ import BottomModal from '../../Components/BottomModal';
 
 const Chats = (props) => {
   const [searchText, setSearchText] = useState('');
+  // !! This seems useless, do we even need this??????
+  // look that we call ChatContext.setCurrentChat anyways
   const [currentChat, setCurrentChat] = useState({
     username: '',
     name: '',
     email: '',
-    chatId: null
+    chatId: null,
+    userId: null
   });
   const [chats, setChats] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -35,6 +38,7 @@ const Chats = (props) => {
 
   const [newChatUsername, setNewChatUsername] = useState('');
   const [newChatMessage, setNewChatMessage] = useState('');
+  const [userId, setUserId] = useState();
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
@@ -44,15 +48,16 @@ const Chats = (props) => {
   useEffect(() => {
     props.navigation.setOptions({
       tabBarStyle: {
-        display: 'flex'
+        display: 'block'
       }
     });
-  }, [props.navigation]);
+  }, []);
 
   useEffect(() => {
     // console.log(authContext.user);
 
     if (authContext.user) {
+      setUserId(authContext.user._id);
       authContext.user.chats.length > 0
         ? setChats(authContext.user.chats)
         : setChats(null);
@@ -112,6 +117,7 @@ const Chats = (props) => {
                   setCurrentChat={setCurrentChat}
                   chatId={chat.chatId}
                   key={chat._id}
+                  userId={userId}
                 />
               ))
             ) : (

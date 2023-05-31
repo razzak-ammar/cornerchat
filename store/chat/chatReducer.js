@@ -3,7 +3,8 @@ import {
   SET_CURRENT_CHAT_MESSAGES,
   SET_LOADING,
   NEW_MESSAGE,
-  USER_IN_CHAT
+  USER_IN_CHAT,
+  USER_LEFT_CHAT
 } from '../types';
 
 export default (state, { type, payload }) => {
@@ -13,7 +14,8 @@ export default (state, { type, payload }) => {
         ...state,
         currentChatId: payload.chatId,
         currentChatName: payload.chatName,
-        loading: false
+        loading: false,
+        userId: payload.userId
       };
     case SET_CURRENT_CHAT_MESSAGES:
       return {
@@ -24,7 +26,7 @@ export default (state, { type, payload }) => {
     case SET_LOADING:
       return { ...state, loading: payload };
     case NEW_MESSAGE:
-      console.log('We ran here');
+      console.log('chatReducer: NEW_MESSAGE');
       return {
         ...state,
         currentChatMessages: [...state.currentChatMessages, payload]
@@ -33,6 +35,11 @@ export default (state, { type, payload }) => {
       return {
         ...state,
         userInChat: true
+      };
+    case USER_LEFT_CHAT:
+      return {
+        ...state,
+        userInChat: false
       };
     default:
       return state;

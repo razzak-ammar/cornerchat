@@ -6,3 +6,4 @@ export const SET_CURRENT_CHAT_MESSAGES = 'SET_CURRENT_CHAT_MESSAGES';
 export const SET_LOADING = 'SET_LOADING';
 export const NEW_MESSAGE = 'NEW_MESSAGE';
 export const USER_IN_CHAT = 'USER_IN_CHAT';
+export const USER_LEFT_CHAT = 'USER_LEFT_CHAT';

@@ -63,7 +63,6 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   socket.on('new-message', async (e) => {
-    console.log('got a new message to deal with');
     const new_message = await sendMessageController({
       chatId: e.chatId,
       message: e.message,
@@ -77,11 +76,23 @@ io.on('connection', (socket) => {
   socket.on('enter-conversation', (e) => {
     socket.join(e.chatId);
     console.log(`${socket.id} has joined ${e.chatId}`);
+    console.log(io.sockets.adapter.rooms.get(e.chatId));
 
     socket.to(e.chatId).emit('user-in-conversation', {
       userId: e.userId
     });
   });
+
+  socket.on('leave-conversation', (e) => {
+    socket.leave(e.chatId);
+    console.log(`${e.userId} has left ${e.chatId}`);
+
+    socket.to(e.chatId).emit('user-left-conversation', {
+      userId: e.userId
+    });
+  });
+
+  socket.on('disconnect', (e) => {});
 });
 
 const PORT = process.env.PORT || 3000;
