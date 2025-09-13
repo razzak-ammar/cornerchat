@@ -8,17 +8,23 @@ import {
   TouchableOpacity,
   SafeAreaView
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ChatTopBar = ({ chatName, userInChat, navigation }) => {
+  // Manually modify the values
+  userInChat = true;
+  let isOnline = true;
+
   return (
     <SafeAreaView style={styles.headerBg}>
       <View style={styles.root}>
         <View style={styles.left}>
-          <TouchableOpacity
-            style={styles.tempArrowContainer}
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={styles.tempArrow}>{'<'}</Text>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <MaterialCommunityIcons
+              name='chevron-left'
+              size={30}
+              color='white'
+            ></MaterialCommunityIcons>
           </TouchableOpacity>
         </View>
         <View style={styles.middle}>
@@ -29,14 +35,22 @@ const ChatTopBar = ({ chatName, userInChat, navigation }) => {
         </View>
         <View style={styles.right}>
           <Text style={styles.chatName}>{chatName}</Text>
-          {userInChat ? (
-            <>
-              <Text style={styles.status}>Online</Text>
+          {isOnline ? (
+            userInChat ? (
               <Text style={styles.status}>They are in the conversation</Text>
-            </>
+            ) : (
+              <Text style={styles.status}>Online</Text>
+            )
           ) : (
             <Text style={styles.status}>Offline</Text>
           )}
+        </View>
+        <View style={styles.evenRight}>
+          <MaterialCommunityIcons
+            name='phone-outline'
+            size={25}
+            color='white'
+          ></MaterialCommunityIcons>
         </View>
       </View>
     </SafeAreaView>
@@ -51,14 +65,13 @@ const styles = StyleSheet.create({
     zIndex: 20
   },
   root: {
-    padding: 20,
-    height: 75,
+    height: 60,
     lineHeight: 1.5,
     display: 'flex',
     flexDirection: 'row'
   },
   chatName: {
-    fontSize: 16,
+    fontSize: 18,
     color: 'white',
     fontWeight: 'bold'
   },
@@ -67,23 +80,24 @@ const styles = StyleSheet.create({
     fontSize: 13
   },
   userPicture: {
-    width: 30,
-    height: 30,
-    borderRadius: 15
-  },
-  right: {
-    marginLeft: 10
-  },
-  left: {},
-  tempArrow: {
-    color: 'white',
-    flex: 1
-  },
-  tempArrowContainer: {
-    height: 75,
-    display: 'flex',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     marginLeft: 10,
-    marginRight: 15
+    marginVertical: 5
+  },
+  middle: {},
+  right: {
+    marginLeft: 10,
+    marginVertical: 5
+  },
+  left: {
+    paddingLeft: 15,
+    paddingVertical: 10
+  },
+  evenRight: {
+    marginLeft: 50,
+    marginVertical: 15
   }
 });
 

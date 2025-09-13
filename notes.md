@@ -12,7 +12,7 @@ Users
 ```json
 {
   "email": "john_doe@gmail.com",
-  "password": "john1234",p
+  "password": "john1234",
   "name": "John Doe",
   "username": "john_doe"
 }

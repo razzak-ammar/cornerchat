@@ -2,4 +2,11 @@
   - [ ] Padding
   - [ ] Search Icon 
 - [ ] New Chat Button
-- [ ] Fix Keyboard Bring up Issue in Individual Chat
+- [x] Fix Keyboard Bring up Issue in Individual Chat
+- [ ] Online/Offline through Database
+- [ ] Display Message Timing
+- [ ] Proper "In Chat" with session ID and user id from docs
+- [ ] Settings Page
+- [ ] Saving Contacts
+- [ ] User Nicknames
+- [ ] See Last Message Sent 

@@ -8,7 +8,8 @@ import {
   Button,
   Keyboard,
   StatusBar,
-  Platform
+  Platform,
+  KeyboardAvoidingView
 } from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import io from 'socket.io-client';
@@ -69,25 +70,27 @@ const Login = (props) => {
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View style={styles.container} pointerEvents='auto'>
         <StatusBar />
-        <Text style={styles.text}>Login</Text>
-        {alert.length > 1 ? <Text style={styles.alert}>{alert}</Text> : null}
-        <TextInput
-          placeholder='Email'
-          style={styles.input}
-          placeholderTextColor='#ffffff'
-          value={formData.email || ''}
-          onChangeText={(text) => onChange('email', text)}
-        />
-        <TextInput
-          placeholder='Password'
-          style={styles.input}
-          placeholderTextColor='#ffffff'
-          value={formData.password || ''}
-          onChangeText={(text) => onChange('password', text)}
-        />
-        <TouchableOpacity onPress={onSubmit}>
-          <Text style={styles.button}>Login</Text>
-        </TouchableOpacity>
+        <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={30}>
+          <Text style={styles.text}>Login</Text>
+          {alert.length > 1 ? <Text style={styles.alert}>{alert}</Text> : null}
+          <TextInput
+            placeholder='Email'
+            style={styles.input}
+            placeholderTextColor='#ffffff'
+            value={formData.email || ''}
+            onChangeText={(text) => onChange('email', text)}
+          />
+          <TextInput
+            placeholder='Password'
+            style={styles.input}
+            placeholderTextColor='#ffffff'
+            value={formData.password || ''}
+            onChangeText={(text) => onChange('password', text)}
+          />
+          <TouchableOpacity onPress={onSubmit}>
+            <Text style={styles.button}>Login</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
   );

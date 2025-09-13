@@ -102,7 +102,7 @@ const Chat = (props) => {
 
       <KeyboardAvoidingView
         behavior='position'
-        keyboardVerticalOffset={100}
+        keyboardVerticalOffset={90}
         ref={scrollViewContainer}
         style={{
           maxHeight: ScreenHeight * scrollViewMultiplier,

@@ -6,7 +6,6 @@ const Settings = () => {
   return (
     <SafeAreaView>
       <StatusBar />
-      <Text style={{ color: 'white' }}>Hello World</Text>
     </SafeAreaView>
   );
 };
